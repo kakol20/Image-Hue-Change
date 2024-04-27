@@ -6,23 +6,23 @@ template <class T>
 class Pseudo2DArray {
 public:
   Pseudo2DArray();
-  Pseudo2DArray(const size_t width, const size_t height);
+  Pseudo2DArray(const unsigned int width, const unsigned int height);
   Pseudo2DArray(const Pseudo2DArray<T>& other);
   ~Pseudo2DArray();
 
   Pseudo2DArray<T>& operator=(const Pseudo2DArray<T>& other);
 
-  T& operator()(const size_t x, const size_t y);
-  T operator()(const size_t x, const size_t y) const;
+  T& operator()(const unsigned int x, const unsigned int y);
+  T operator()(const unsigned int x, const unsigned int y) const;
 
 private:
   T* m_arr;
 
-  size_t m_width;
-  size_t m_height;
+  unsigned int m_width;
+  unsigned int m_height;
   size_t m_size;
 
-  size_t GetIndex(const size_t x, const size_t y) const;
+  size_t GetIndex(const unsigned int x, const unsigned int y) const;
 };
 
 template<class T>
@@ -33,10 +33,10 @@ inline Pseudo2DArray<T>::Pseudo2DArray() {
 }
 
 template<class T>
-inline Pseudo2DArray<T>::Pseudo2DArray(const size_t width, const size_t height) {
+inline Pseudo2DArray<T>::Pseudo2DArray(const unsigned int width, const unsigned int height) {
   m_width = width;
   m_height = height;
-  m_size = width * height;
+  m_size = size_t(width * height);
 
   m_arr = new T[m_size];
 }
@@ -48,7 +48,7 @@ inline Pseudo2DArray<T>::Pseudo2DArray(const Pseudo2DArray<T>& other) {
 
   m_width = other.m_width;
   m_height = other.m_height;
-  m_size = m_width * m_height;
+  m_size = size_t(m_width * m_height);
 
   m_arr = new T[m_size];
 
@@ -70,7 +70,7 @@ inline Pseudo2DArray<T>& Pseudo2DArray<T>::operator=(const Pseudo2DArray<T>& oth
 
   m_width = other.m_width;
   m_height = other.m_height;
-  m_size = m_width * m_height;
+  m_size = size_t(m_width * m_height);
 
   m_arr = new T[m_size];
 
@@ -79,16 +79,16 @@ inline Pseudo2DArray<T>& Pseudo2DArray<T>::operator=(const Pseudo2DArray<T>& oth
 }
 
 template<class T>
-inline T& Pseudo2DArray<T>::operator()(const size_t x, const size_t y) {
+inline T& Pseudo2DArray<T>::operator()(const unsigned int x, const unsigned int y) {
   return m_arr[GetIndex(x, y)];
 }
 
 template<class T>
-inline T Pseudo2DArray<T>::operator()(const size_t x, const size_t y) const {
+inline T Pseudo2DArray<T>::operator()(const unsigned int x, const unsigned int y) const {
   return m_arr[GetIndex(x, y)];
 }
 
 template<class T>
-inline size_t Pseudo2DArray<T>::GetIndex(const size_t x, const size_t y) const {
-  return x + (y * m_width);
+inline size_t Pseudo2DArray<T>::GetIndex(const unsigned int x, const unsigned int y) const {
+  return size_t(x + (y * m_width));
 }
