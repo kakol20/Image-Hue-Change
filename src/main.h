@@ -8,6 +8,6 @@
 
 #include <iostream>
 
-#include "misc/Pseudo2DArray.h"
+#include "misc/Pseudo2DArray.hpp"
 
 #endif // !MAIN_H
