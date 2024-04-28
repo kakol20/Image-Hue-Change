@@ -6,7 +6,7 @@
 
 class Matrix {
 public:
-  Matrix(double* arr = new double[1], const unsigned int cols = 1, const unsigned int rows = 1);
+  Matrix(const std::vector<double>& arr = { 1 }, const unsigned int cols = 1, const unsigned int rows = 1);
   Matrix(const Pseudo2DArray<double>& arr);
   Matrix(const Matrix& other);
   ~Matrix() {};

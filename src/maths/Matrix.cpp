@@ -2,7 +2,7 @@
 
 #include "Matrix.h"
 
-Matrix::Matrix(double* arr, const unsigned int cols, const unsigned int rows) {
+Matrix::Matrix(const std::vector<double>& arr, const unsigned int cols, const unsigned int rows) {
   m_cols = cols;
   m_rows = rows;
 
@@ -156,7 +156,7 @@ bool Matrix::Cofactor3x3() {
         const unsigned int rowMax = j <= 1 ? 2 : 1;
         const unsigned int rowMin = j >= 1 ? 0 : 1;
 
-        double detArr[] = {
+        std::vector<double> detArr = {
           m_mat(colMin, rowMin), m_mat(colMax, rowMin),
           m_mat(colMin, rowMax), m_mat(colMax, rowMax)
         };

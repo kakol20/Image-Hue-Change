@@ -1,13 +1,14 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 template <class T>
 class Pseudo2DArray {
 public:
   Pseudo2DArray(const unsigned int width = 1, const unsigned int height = 1);
   Pseudo2DArray(const Pseudo2DArray<T>& other);
-  Pseudo2DArray(T* arr, const unsigned int width, const unsigned int height);
+  Pseudo2DArray(const std::vector<T>& arr, const unsigned int width, const unsigned int height);
   ~Pseudo2DArray();
 
   Pseudo2DArray<T>& operator=(const Pseudo2DArray<T>& other);
@@ -21,7 +22,8 @@ public:
   std::string Debug() const;
 
 private:
-  T* m_arr;
+  //T* m_arr;
+  std::vector<T> m_arr;
 
   unsigned int m_width;
   unsigned int m_height;
@@ -36,7 +38,8 @@ inline Pseudo2DArray<T>::Pseudo2DArray(const unsigned int width, const unsigned 
   m_height = height;
   m_size = size_t(width * height);
 
-  m_arr = new T[m_size];
+  //m_arr = new T[m_size];
+  m_arr = std::vector<T>(m_size);
 }
 
 template<class T>
@@ -45,53 +48,31 @@ inline Pseudo2DArray<T>::Pseudo2DArray(const Pseudo2DArray<T>& other) {
   m_height = other.m_height;
   m_size = size_t(m_width * m_height);
 
-  m_arr = new T[m_size];
-
-  //memcpy(m_arr, other.m_arr, m_size);
-  for (size_t i = 0; i < m_size; i++) {
-    m_arr[i] = other.m_arr[i];
-  }
+  m_arr = other.m_arr;
 }
 
 template<class T>
-inline Pseudo2DArray<T>::Pseudo2DArray(T* arr, const unsigned int width, const unsigned int height) {
+inline Pseudo2DArray<T>::Pseudo2DArray(const std::vector<T>& arr, const unsigned int width, const unsigned int height) {
   m_width = width;
   m_height = height;
   m_size = size_t(m_width * m_height);
 
-  m_arr = new T[m_size];
-
-  for (size_t i = 0; i < m_size; i++) {
-    m_arr[i] = arr[i];
-  }
+  m_arr = arr;
 }
 
 template<class T>
 inline Pseudo2DArray<T>::~Pseudo2DArray() {
-  delete[] m_arr;
-  m_arr = nullptr;
 }
 
 template<class T>
 inline Pseudo2DArray<T>& Pseudo2DArray<T>::operator=(const Pseudo2DArray<T>& other) {
   if (this == &other) return *this;
 
-  {
-    bool temp = true;
-  }
-
-  delete[] m_arr;
-  m_arr = nullptr;
-
   m_width = other.m_width;
   m_height = other.m_height;
   m_size = size_t(m_width * m_height);
 
-  m_arr = new T[m_size];
-
-  for (size_t i = 0; i < m_size; i++) {
-    m_arr[i] = other.m_arr[i];
-  }
+  m_arr = other.m_arr;
   return *this;
 }
 
