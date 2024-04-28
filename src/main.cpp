@@ -4,30 +4,25 @@
 #include "main.h"
 
 int main(int argc, char* argv[]) {
-  std::cout << "Hello World\n";
+  //std::cout << "Hello World\n";
 
   Matrix lhs({
-    1., 2., 1.,
-    0., 1., 0.,
-    2., 3., 4.}, 3, 3);
-  Matrix rhs({
-    2, 5,
-    6, 7,
-    1, 8}, 2, 3);
+    0.4124564, 0.3575761, 0.1804375,
+    0.2126729, 0.7151522, 0.0721750,
+    0.0193339, 0.1191920, 0.9503041 }, 3, 3);
+  Matrix rhs({ 1,0.5,0.25, }, 1, 3);
   Matrix lhsInv = lhs;
-  lhsInv.Invert3x3();
+  if (!lhsInv.Invert3x3()) std::cout << "Matrix inversion failed\n";
 
   Matrix mult = lhs * rhs;
   Matrix multInv = lhsInv * mult;
 
-  //tempArr = { 1 };
-
   //std::cout <<
-  std::cout << lhs.Debug();
-  std::cout << rhs.Debug();
-  std::cout << lhsInv.Debug();
-  std::cout << mult.Debug();
-  std::cout << multInv.Debug();
+  std::cout << lhs.Debug() << '\n';
+  std::cout << rhs.Debug() << '\n';
+  std::cout << lhsInv.Debug() << '\n';
+  std::cout << mult.Debug() << '\n';
+  std::cout << multInv.Debug() << '\n';
 
   std::cout << "Press enter to exit...\n";
   std::cin.ignore();
