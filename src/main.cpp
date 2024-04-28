@@ -6,15 +6,21 @@
 int main(int argc, char* argv[]) {
   std::cout << "Hello World\n";
 
-  Pseudo2DArray<double> mat(3, 3);
-  mat(0, 0) = 3.14159265;
-  std::cout << mat(0, 0) << std::endl;
-  mat(0, 0) *= 2.;
-  std::cout << mat(0, 0) << std::endl;
+  double tempArr[] = {
+    1., 2., 1.,
+    0., 1., 0.,
+    2., 3., 4.
+  };
 
-  const Pseudo2DArray<double> matC = mat;
-  //double test = matC(0, 0);
-  std::cout << matC(0, 0) << std::endl;
+  Matrix lhs(tempArr, 3, 3);
+  Matrix lhsInv = lhs;
+  lhsInv.Invert3x3();
+
+  //tempArr = { 1 };
+
+  //std::cout <<
+  std::cout << lhs.Debug();
+  std::cout << lhsInv.Debug();
 
   std::cout << "Press enter to exit...\n";
   std::cin.ignore();
