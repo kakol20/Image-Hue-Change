@@ -8,7 +8,9 @@
 
 #include <iostream>
 
-#include "misc/Pseudo2DArray.hpp"
+#include "colourSpace/ColourSpace.hpp"
+#include "colourSpace/sRGB.h"
 #include "maths/Matrix.h"
+#include "misc/Pseudo2DArray.hpp"
 
 #endif // !MAIN_H

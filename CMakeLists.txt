@@ -15,9 +15,11 @@ project ("Image Hue Change")
 
 # Add source to this project's executable.
 add_executable (ImageHueChange "src/main.h" 
-    "src/main.cpp"
-    "src/misc/Pseudo2DArray.hpp"
-    "src/maths/Matrix.cpp")
+  "src/main.cpp"
+  "src/misc/Pseudo2DArray.hpp"
+  "src/maths/Matrix.cpp"
+  "src/colourSpace/ColourSpace.hpp"
+  "src/colourSpace/sRGB.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET ImageHueChange PROPERTY CXX_STANDARD 20)
