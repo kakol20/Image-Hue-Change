@@ -6,6 +6,12 @@
 int main(int argc, char* argv[]) {
   //std::cout << "Hello World\n";
 
+  //std::cout << "Have " << argc << " arguments:\n";
+  for (int i = 0; i < argc; ++i) {
+    std::cout << argv[i] << '\n';
+  }
+  std::cout << '\n';
+
   sRGB t1(1., 0., 0.5);
   sRGB t2 = t1;
   t2 *= t1;
