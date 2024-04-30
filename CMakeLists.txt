@@ -19,7 +19,7 @@ add_executable (ImageHueChange "src/main.h"
   "src/misc/Pseudo2DArray.hpp"
   "src/maths/Matrix.cpp"
   "src/colourSpace/ColourSpace.hpp"
-  "src/colourSpace/sRGB.cpp")
+  "src/colourSpace/sRGB.hpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET ImageHueChange PROPERTY CXX_STANDARD 20)

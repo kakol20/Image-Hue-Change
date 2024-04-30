@@ -9,7 +9,7 @@
 #include <iostream>
 
 #include "colourSpace/ColourSpace.hpp"
-#include "colourSpace/sRGB.h"
+#include "colourSpace/sRGB.hpp"
 #include "maths/Matrix.h"
 #include "misc/Pseudo2DArray.hpp"
 

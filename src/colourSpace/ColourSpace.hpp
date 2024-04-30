@@ -28,6 +28,47 @@ public:
     return std::to_string(m_a) + ' ' + std::to_string(m_b) + ' ' + std::to_string(m_c) + '\n';
   }
 
+  ColourSpace& operator/=(const ColourSpace& other);
+  ColourSpace& operator*=(const ColourSpace& other);
+  ColourSpace& operator+=(const ColourSpace& other);
+  ColourSpace& operator-=(const ColourSpace& other);
+  ColourSpace& operator*=(const double scalar);
+
 protected:
   double m_a, m_b, m_c;
 };
+
+inline ColourSpace& ColourSpace::operator/=(const ColourSpace& other) {
+  m_a /= other.m_a;
+  m_b /= other.m_b;
+  m_c /= other.m_c;
+  return *this;
+}
+
+inline ColourSpace& ColourSpace::operator*=(const ColourSpace& other) {
+  m_a *= other.m_a;
+  m_b *= other.m_b;
+  m_c *= other.m_c;
+  return *this;
+}
+
+inline ColourSpace& ColourSpace::operator+=(const ColourSpace& other) {
+  m_a += other.m_a;
+  m_b += other.m_b;
+  m_c += other.m_c;
+  return *this;
+}
+
+inline ColourSpace& ColourSpace::operator-=(const ColourSpace& other) {
+  m_a -= other.m_a;
+  m_b -= other.m_b;
+  m_c -= other.m_c;
+  return *this;
+}
+
+inline ColourSpace& ColourSpace::operator*=(const double scalar) {
+  m_a *= scalar;
+  m_b *= scalar;
+  m_c *= scalar;
+  return *this;
+}
