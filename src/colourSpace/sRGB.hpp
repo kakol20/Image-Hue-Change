@@ -12,9 +12,9 @@ public:
   double GetG() const { return m_b; };
   double GetB() const { return m_c; };
 
-  uint8_t GetRUInt() const { return uint8_t(std::round(m_a * 255.)); };
-  uint8_t GetGUInt() const { return uint8_t(std::round(m_b * 255.)); };
-  uint8_t GetBUInt() const { return uint8_t(std::round(m_c * 255.)); };
+  uint8_t GetRUInt() const;
+  uint8_t GetGUInt() const;
+  uint8_t GetBUInt() const;
 
   static double UInt8ToDouble(const uint8_t v) { return double(v) / 255.; };
 
@@ -36,10 +36,26 @@ public:
     m_c = std::max(std::min(m_c, 1.), 0.);
   }
 
-private:
-
 };
 
+
+inline uint8_t sRGB::GetRUInt() const {
+  int o = (int)std::round(m_a * 255.);
+  o = o > 255 ? 255 : o;
+  return uint8_t(o < 0 ? 0 : o);
+}
+
+inline uint8_t sRGB::GetGUInt() const {
+  int o = (int)std::round(m_b * 255.);
+  o = o > 255 ? 255 : o;
+  return uint8_t(o < 0 ? 0 : o);
+}
+
+inline uint8_t sRGB::GetBUInt() const {
+  int o = (int)std::round(m_c * 255.);
+  o = o > 255 ? 255 : o;
+  return uint8_t(o < 0 ? 0 : o);
+}
 
 inline sRGB& sRGB::operator/=(const sRGB& other) {
   ColourSpace lhs(other);
