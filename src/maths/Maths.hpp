@@ -28,4 +28,5 @@ public:
   static const double Pi;
   static const double Tau;
   static const double RadToDeg;
+  static const double DegToRad;
 };

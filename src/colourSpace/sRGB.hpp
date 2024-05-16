@@ -36,6 +36,9 @@ public:
     m_c = std::max(std::min(m_c, 1.), 0.);
   }
 
+  bool IsInside() const;
+
+  std::string Debug(const double maxValue = 1.) const;
 };
 
 
@@ -84,4 +87,12 @@ inline sRGB& sRGB::operator-=(const sRGB& other) {
 inline sRGB& sRGB::operator*=(const double scalar) {
   ColourSpace::operator*=(scalar);
   return *this;
+}
+
+inline bool sRGB::IsInside() const {
+  return m_a <= 1 && m_b <= 1 && m_c <= 1 && m_a >= 0 && m_b >= 0 && m_c >= 0;
+}
+
+inline std::string sRGB::Debug(const double maxValue) const {
+  return std::to_string(m_a * maxValue) + ' ' + std::to_string(m_b * maxValue) + ' ' + std::to_string(m_c * maxValue) + '\n';
 }

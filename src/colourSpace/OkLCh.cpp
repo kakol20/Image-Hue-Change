@@ -113,3 +113,17 @@ OkLCh& OkLCh::operator*=(const double scalar) {
   m_c = Maths::UnsignedMod(m_c, Maths::Tau);
   return *this;
 }
+
+void OkLCh::Fallback(const double change) {
+  m_a = std::min(std::max(m_a, 0.), 1.);
+  sRGB current = OkLCh::OkLChtosRGB(*this);
+  while (!current.IsInside()) {
+    m_b -= change;
+    current = OkLCh::OkLChtosRGB(*this);
+  }
+}
+
+bool OkLCh::IsInsidesRGB() const {
+  sRGB current = OkLCh::OkLChtosRGB(*this);
+  return current.IsInside();
+}
