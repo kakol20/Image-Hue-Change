@@ -1,28 +1,54 @@
 ﻿// main.cpp : Defines the entry point for the application.
 //
 
-#include "main.h"
+#include <iostream>
+
+#include "colourSpace/ColourSpace.hpp"
+#include "colourSpace/OkLCh.h"
+#include "colourSpace/sRGB.hpp"
+#include "maths/Maths.hpp"
+#include "maths/Matrix.h"
+#include "misc/Pseudo2DArray.hpp"
+
+const double Maths::Pi = 3.1415926535;
+const double Maths::Tau = 6.283185307;
+const double Maths::RadToDeg = 180. / Maths::Pi;
+const double Maths::DegToRad = Maths::Pi / 180.;
 
 int main(int argc, char* argv[]) {
   //std::cout << "Hello World\n";
 
-  Matrix lhs({
-    0.4124564, 0.3575761, 0.1804375,
-    0.2126729, 0.7151522, 0.0721750,
-    0.0193339, 0.1191920, 0.9503041 }, 3, 3);
-  Matrix rhs({ 1,0.5,0.25, }, 1, 3);
-  Matrix lhsInv = lhs;
-  if (!lhsInv.Invert3x3()) std::cout << "Matrix inversion failed\n";
+  //std::cout << "Have " << argc << " arguments:\n";
+  for (int i = 0; i < argc; ++i) {
+    std::cout << argv[i] << '\n';
+  }
+  std::cout << '\n';
 
-  Matrix mult = lhs * rhs;
-  Matrix multInv = lhsInv * mult;
+  std::cout << Maths::Pi << ' ' << Maths::Tau << ' ' << Maths::RadToDeg << '\n';
 
-  //std::cout <<
-  std::cout << lhs.Debug() << '\n';
-  std::cout << rhs.Debug() << '\n';
-  std::cout << lhsInv.Debug() << '\n';
-  std::cout << mult.Debug() << '\n';
-  std::cout << multInv.Debug() << '\n';
+  sRGB t1(56. / 255., 140. / 255., 70 / 255.);
+  sRGB t2 = t1;
+  t2 *= t1;
+  sRGB t3 = t2 * (1. / 3.);
+
+  OkLCh t4 = OkLCh::sRGBtoOkLCh(t1);
+  sRGB t5 = OkLCh::OkLChtosRGB(t4);
+  OkLCh t6(0., 0., Maths::Pi);
+  t6 += t4;
+  OkLCh t7(0.62, 0.26, 270 * Maths::DegToRad);
+  OkLCh t8 = t7;
+  t8.Fallback();
+  sRGB t9 = OkLCh::OkLChtosRGB(t8);
+
+  std::cout << t1.Debug(255) << '\n';
+  std::cout << t2.Debug(255) << '\n';
+  std::cout << t3.Debug(255) << '\n';
+  std::cout << t4.Debug() << '\n';
+  std::cout << t5.Debug(255) << '\n';
+  std::cout << t6.Debug() << t6.IsInsidesRGB() << "\n\n";
+  std::cout << t7.Debug() << t7.IsInsidesRGB() << "\n\n";
+  std::cout << t8.Debug() << t8.IsInsidesRGB() << "\n\n";
+  std::cout << t9.Debug(255) << t9.IsInside() << "\n\n";
 
   std::cout << "Press enter to exit...\n";
   std::cin.ignore();
