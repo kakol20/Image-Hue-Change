@@ -73,10 +73,10 @@ sRGB OkLCh::OkLChtosRGB(const OkLCh& oklch) {
 
 std::string OkLCh::Debug(const bool inDegrees) const {
   if (inDegrees) {
-    return std::to_string(m_a) + ' ' + std::to_string(m_b) + ' ' + std::to_string(m_c * Maths::RadToDeg) + '\n';
+    return std::to_string(m_a) + ' ' + std::to_string(m_b) + ' ' + std::to_string(m_c * Maths::RadToDeg);
   }
   else {
-    return std::to_string(m_a) + ' ' + std::to_string(m_b) + ' ' + std::to_string(m_c) + '\n';
+    return std::to_string(m_a) + ' ' + std::to_string(m_b) + ' ' + std::to_string(m_c);
   }
 }
 
@@ -116,9 +116,12 @@ OkLCh& OkLCh::operator*=(const double scalar) {
 
 void OkLCh::Fallback(const double change) {
   m_a = std::min(std::max(m_a, 0.), 1.);
+  m_b = m_a == 0. || m_a == 1. ? 0. : m_b;
+
   sRGB current = OkLCh::OkLChtosRGB(*this);
   while (!current.IsInside()) {
     m_b -= change;
+    m_b = std::max(m_b, 0.);
     current = OkLCh::OkLChtosRGB(*this);
   }
 }

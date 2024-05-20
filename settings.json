@@ -1,0 +1,6 @@
+{
+  "input": "data/rubik.png",
+  "output": "data/out.png",
+  "ref_col": "FF0000",
+  "tgt_col": "0000FF"
+}

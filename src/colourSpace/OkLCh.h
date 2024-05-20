@@ -13,13 +13,6 @@ public:
   double GetC() const { return m_b; };
   double GetH() const { return m_c; };
 
-  /*
-  TODO:
-    Closest Fallback by chroma in sRGB
-      void ChromaFallback(const double increment = 0.01)
-        First check if in sRGB to avoid unnecesary calculations
-  */ 
-
   static OkLCh sRGBtoOkLCh(const sRGB& srgb);
   static sRGB OkLChtosRGB(const OkLCh& oklch);
 

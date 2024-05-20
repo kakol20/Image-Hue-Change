@@ -1,10 +1,9 @@
-﻿// main.cpp : Defines the entry point for the application.
-//
-
+﻿#include <chrono>
 #include <iostream>
 #include <sstream>
-#include <chrono>
+#include <fstream>
 
+#include "../ext/json/json.hpp"
 #include "colourSpace/ColourSpace.hpp"
 #include "colourSpace/OkLCh.h"
 #include "colourSpace/sRGB.hpp"
@@ -13,47 +12,91 @@
 #include "misc/Log.h"
 #include "misc/Pseudo2DArray.hpp"
 
+using json = nlohmann::json;
+
 const double Maths::Pi = 3.1415926535;
 const double Maths::Tau = 6.283185307;
 const double Maths::RadToDeg = 180. / Maths::Pi;
 const double Maths::DegToRad = Maths::Pi / 180.;
 
-int main(int argc, char* argv[]) {
-  for (int i = 0; i < argc; i++) {
-    Log::StartLine();
+int main() {
+  // ----- CHECK IF settings.json EXISTS -----
 
-    std::stringstream ss;
-    ss << argv[i];
-    Log::Write(ss.str());
+  std::ifstream f("settings.json");
+  if (f.fail()) {
+    Log::StartLine();
+    Log::Write("settings.json not found");
     Log::EndLine();
   }
+  else {
+    json settings = json::parse(f);
 
-  Log::StartTime();
-  while (true) {
-    if (Log::CheckTimeSeconds(5.)) {
+    // ----- CHECK IF SETTING EXISTS -----
+
+    bool success = true;
+
+    if (!settings.contains("input")) {
       Log::StartLine();
-      Log::Write("5 seconds later");
+      Log::Write("input setting not found");
       Log::EndLine();
-
-      break;
+      success = false;
     }
-  }
 
-  Log::StartTime();
-  while (true) {
-    if (Log::CheckTimeSeconds(2. / 24.)) {
+    if (!settings.contains("output")) {
       Log::StartLine();
-      Log::Write("2 frames later (24fps)");
+      Log::Write("output setting not found");
+      Log::EndLine();
+      success = false;
+    }
+
+    if (!settings.contains("ref_col")) {
+      Log::StartLine();
+      Log::Write("ref_col setting not found");
+      Log::EndLine();
+      success = false;
+    }
+
+    if (!settings.contains("tgt_col")) {
+      Log::StartLine();
+      Log::Write("tgt_col setting not found");
+      Log::EndLine();
+      success = false;
+    }
+
+    if (success) {
+      // ----- READ SETTINGS -----
+
+      std::string input = settings["input"];
+      Log::StartLine();
+      Log::Write("input: " + input);
       Log::EndLine();
 
-      break;
+      std::string output = settings["output"];
+      Log::StartLine();
+      Log::Write("output: " + output);
+      Log::EndLine();
+
+      OkLCh ref_col = OkLCh::sRGBtoOkLCh(sRGB::HexTosRGB(settings["ref_col"]));
+      Log::StartLine();
+      Log::Write("Reference Colour: #");
+      Log::Write(settings["ref_col"]);
+      Log::Write(" OkLCh(");
+      Log::Write(ref_col.Debug());
+      Log::Write(")");
+      Log::EndLine();
+
+      OkLCh tgt_col = OkLCh::sRGBtoOkLCh(sRGB::HexTosRGB(settings["tgt_col"]));
+      Log::StartLine();
+      Log::Write("Target Colour: #");
+      Log::Write(settings["tgt_col"]);
+      Log::Write(" OkLCh(");
+      Log::Write(tgt_col.Debug());
+      Log::Write(")");
+      Log::EndLine();
     }
   }
 
   Log::Save();
-
-  auto start = std::chrono::high_resolution_clock::now();
-
   std::cout << "Press enter to exit...\n";
   std::cin.ignore();
   return 0;
