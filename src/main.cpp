@@ -2,12 +2,15 @@
 //
 
 #include <iostream>
+#include <sstream>
+#include <chrono>
 
 #include "colourSpace/ColourSpace.hpp"
 #include "colourSpace/OkLCh.h"
 #include "colourSpace/sRGB.hpp"
 #include "maths/Maths.hpp"
 #include "maths/Matrix.h"
+#include "misc/Log.h"
 #include "misc/Pseudo2DArray.hpp"
 
 const double Maths::Pi = 3.1415926535;
@@ -16,39 +19,40 @@ const double Maths::RadToDeg = 180. / Maths::Pi;
 const double Maths::DegToRad = Maths::Pi / 180.;
 
 int main(int argc, char* argv[]) {
-  //std::cout << "Hello World\n";
+  for (int i = 0; i < argc; i++) {
+    Log::StartLine();
 
-  //std::cout << "Have " << argc << " arguments:\n";
-  for (int i = 0; i < argc; ++i) {
-    std::cout << argv[i] << '\n';
+    std::stringstream ss;
+    ss << argv[i];
+    Log::Write(ss.str());
+    Log::EndLine();
   }
-  std::cout << '\n';
 
-  std::cout << Maths::Pi << ' ' << Maths::Tau << ' ' << Maths::RadToDeg << '\n';
+  Log::StartTime();
+  while (true) {
+    if (Log::CheckTimeSeconds(5.)) {
+      Log::StartLine();
+      Log::Write("5 seconds later");
+      Log::EndLine();
 
-  sRGB t1(56. / 255., 140. / 255., 70 / 255.);
-  sRGB t2 = t1;
-  t2 *= t1;
-  sRGB t3 = t2 * (1. / 3.);
+      break;
+    }
+  }
 
-  OkLCh t4 = OkLCh::sRGBtoOkLCh(t1);
-  sRGB t5 = OkLCh::OkLChtosRGB(t4);
-  OkLCh t6(0., 0., Maths::Pi);
-  t6 += t4;
-  OkLCh t7(0.62, 0.26, 270 * Maths::DegToRad);
-  OkLCh t8 = t7;
-  t8.Fallback();
-  sRGB t9 = OkLCh::OkLChtosRGB(t8);
+  Log::StartTime();
+  while (true) {
+    if (Log::CheckTimeSeconds(2. / 24.)) {
+      Log::StartLine();
+      Log::Write("2 frames later (24fps)");
+      Log::EndLine();
 
-  std::cout << t1.Debug(255) << '\n';
-  std::cout << t2.Debug(255) << '\n';
-  std::cout << t3.Debug(255) << '\n';
-  std::cout << t4.Debug() << '\n';
-  std::cout << t5.Debug(255) << '\n';
-  std::cout << t6.Debug() << t6.IsInsidesRGB() << "\n\n";
-  std::cout << t7.Debug() << t7.IsInsidesRGB() << "\n\n";
-  std::cout << t8.Debug() << t8.IsInsidesRGB() << "\n\n";
-  std::cout << t9.Debug(255) << t9.IsInside() << "\n\n";
+      break;
+    }
+  }
+
+  Log::Save();
+
+  auto start = std::chrono::high_resolution_clock::now();
 
   std::cout << "Press enter to exit...\n";
   std::cin.ignore();
