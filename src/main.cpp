@@ -1,12 +1,13 @@
 ﻿#include <chrono>
+#include <fstream>
 #include <iostream>
 #include <sstream>
-#include <fstream>
 
 #include "../ext/json/json.hpp"
 #include "colourSpace/ColourSpace.hpp"
 #include "colourSpace/OkLCh.h"
 #include "colourSpace/sRGB.hpp"
+#include "image/Image.h"
 #include "maths/Maths.hpp"
 #include "maths/Matrix.h"
 #include "misc/Log.h"
@@ -93,6 +94,36 @@ int main() {
       Log::Write(tgt_col.Debug());
       Log::Write(")");
       Log::EndLine();
+
+      // ----- READ INPUT IMAGE -----
+
+      success = true;
+      Image inputImage;
+      if (!inputImage.Read(input.c_str())) success = false;
+
+      if (success) {
+        Log::StartLine();
+        bool grayscale = false;
+        if (inputImage.GetChannels() <= 2) {
+          Log::Write("  Is Grayscale: TRUE");
+          grayscale = true;
+        }
+        else {
+          Log::Write("  Is Grayscale: FALSE");
+        }
+        Log::EndLine();
+
+        Log::StartLine();
+        bool alpha = false;
+        if (inputImage.GetChannels() == 2 || inputImage.GetChannels() == 4) {
+          Log::Write("  Has Alpha: TRUE");
+          alpha = true;
+        }
+        else {
+          Log::Write("  Has Alpha: FALSE");
+        }
+        Log::EndLine();
+      }
     }
   }
 

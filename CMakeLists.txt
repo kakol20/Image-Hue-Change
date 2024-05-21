@@ -23,7 +23,10 @@ add_executable (ImageHueChange
   "src/colourSpace/OkLCh.cpp"
   "src/maths/Maths.hpp"
   "src/misc/Log.cpp"
-  "ext/json/json.hpp")
+  "ext/json/json.hpp"
+  "ext/stb/stb_image.h"
+  "ext/stb/stb_image_write.h"
+  "src/image/Image.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET ImageHueChange PROPERTY CXX_STANDARD 20)
