@@ -69,12 +69,12 @@ int main() {
 
       std::string input = settings["input"];
       Log::StartLine();
-      Log::Write("input: " + input);
+      Log::Write("Input: " + input);
       Log::EndLine();
 
       std::string output = settings["output"];
       Log::StartLine();
-      Log::Write("output: " + output);
+      Log::Write("Output: " + output);
       Log::EndLine();
 
       OkLCh ref_col = OkLCh::sRGBtoOkLCh(sRGB::HexTosRGB(settings["ref_col"]));
@@ -123,6 +123,76 @@ int main() {
           Log::Write("  Has Alpha: FALSE");
         }
         Log::EndLine();
+
+        // ----- PROCESS IMAGE -----
+
+        OkLCh diff = tgt_col - ref_col;
+        diff = OkLCh(0, 0, diff.GetH());
+        Log::StartLine();
+        Log::Write("Difference: OkLCh(");
+        Log::Write(diff.Debug());
+        Log::Write(")");
+        //Log::EndLine();
+
+        Log::StartTime();
+        for (int y = 0; y < inputImage.GetHeight(); y++) {
+          for (int x = 0; x < inputImage.GetWidth(); x++) {
+            const size_t index = inputImage.GetIndex(x, y);
+
+            // ----- READ PIXEL COLOUR -----
+
+            sRGB pixelsRGB;
+            if (grayscale) {
+              double v = sRGB::UInt8ToDouble(inputImage.GetData(index));
+              pixelsRGB = sRGB(v, v, v);
+            }
+            else {
+              double r = sRGB::UInt8ToDouble(inputImage.GetData(index + 0));
+              double g = sRGB::UInt8ToDouble(inputImage.GetData(index + 1));
+              double b = sRGB::UInt8ToDouble(inputImage.GetData(index + 2));
+              pixelsRGB = sRGB(r, g, b);
+            }
+
+            OkLCh pixelLCh = OkLCh::sRGBtoOkLCh(pixelsRGB);
+            pixelLCh += diff;
+            pixelLCh.Fallback();
+
+            // ----- WRITE PIXEL COLOUR -----
+
+            pixelsRGB = OkLCh::OkLChtosRGB(pixelLCh);
+            if (grayscale) {
+              uint8_t v = pixelsRGB.GetRUInt();
+              inputImage.SetData(index, v);
+            }
+            else {
+              uint8_t r = pixelsRGB.GetRUInt();
+              uint8_t g = pixelsRGB.GetGUInt();
+              uint8_t b = pixelsRGB.GetBUInt();
+              
+              inputImage.SetData(index + 0, r);
+              inputImage.SetData(index + 1, g);
+              inputImage.SetData(index + 2, b);
+            }
+
+            // ----- CHECK PROCESS TIME -----
+
+            if (Log::CheckTimeSeconds(0.1)) {
+              double progress = double(index) / double(inputImage.GetSize());
+              progress *= 100;
+
+              Log::EndLine();
+              Log::StartLine();
+              Log::Write("  ");
+              Log::Write(std::to_string(progress));
+              Log::Write("%");
+
+              Log::StartTime();
+            }
+          }
+        }
+        Log::EndLine();
+
+        inputImage.Write(output.c_str());
       }
     }
   }

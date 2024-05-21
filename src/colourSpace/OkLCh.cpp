@@ -122,6 +122,8 @@ void OkLCh::Fallback(const double change) {
   while (!current.IsInside()) {
     m_b -= change;
     m_b = std::max(m_b, 0.);
+
+    if (m_b == 0) break;
     current = OkLCh::OkLChtosRGB(*this);
   }
 }
