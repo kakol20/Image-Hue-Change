@@ -198,7 +198,7 @@ int main() {
   }
 
   Log::Save();
-  std::cout << "Press enter to exit...\n";
-  std::cin.ignore();
+  //std::cout << "Press enter to exit...\n";
+  //std::cin.ignore();
   return 0;
 }
