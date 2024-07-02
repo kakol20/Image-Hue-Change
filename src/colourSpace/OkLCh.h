@@ -13,6 +13,10 @@ public:
   double GetC() const { return m_b; };
   double GetH() const { return m_c; };
 
+  void SetL(const double l) { m_a = l; };
+  void SetC(const double c) { m_b = c; };
+  void SetH(const double h) { m_c = h; };
+
   static OkLCh sRGBtoOkLCh(const sRGB& srgb);
   static sRGB OkLChtosRGB(const OkLCh& oklch);
 
@@ -35,6 +39,6 @@ public:
   OkLCh operator-(const OkLCh& other) const { OkLCh out(*this); out -= other; return out; };
   OkLCh operator*(const double scalar) const { OkLCh out(*this); out *= scalar; return out; };
 
-  void Fallback(const double change = 0.001);
+  void Fallback(const unsigned int maxIterations = 10);
   bool IsInsidesRGB() const;
 };
