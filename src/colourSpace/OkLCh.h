@@ -13,6 +13,10 @@ public:
   double GetC() const { return m_b; };
   double GetH() const { return m_c; };
 
+  void SetL(const double l) { m_a = l; };
+  void SetC(const double c) { m_b = c; };
+  void SetH(const double h) { m_c = h; };
+
   static OkLCh sRGBtoOkLCh(const sRGB& srgb);
   static sRGB OkLChtosRGB(const OkLCh& oklch);
 
