@@ -149,7 +149,21 @@ OkLCh& OkLCh::operator*=(const double scalar) {
 }
 
 void OkLCh::Fallback(const unsigned int maxIterations) {
-  
+  int iter = 0;
+
+  while (iter < maxIterations) {
+    sRGB rgb = OkLCh::OkLChtosRGB(*this);
+    rgb.Clamp();
+
+    OkLCh outLCh = OkLCh::sRGBtoOkLCh(rgb);
+
+    m_b = outLCh.GetC();
+    m_c = outLCh.GetH();
+
+    if ((*this).IsInsidesRGB()) break;
+
+    iter++;
+  }
 }
 
 bool OkLCh::IsInsidesRGB() const {
