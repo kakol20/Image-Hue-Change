@@ -39,6 +39,6 @@ public:
   OkLCh operator-(const OkLCh& other) const { OkLCh out(*this); out -= other; return out; };
   OkLCh operator*(const double scalar) const { OkLCh out(*this); out *= scalar; return out; };
 
-  void Fallback(const double change = 0.001);
+  void Fallback(const unsigned int maxIterations = 10);
   bool IsInsidesRGB() const;
 };

@@ -14,9 +14,9 @@ OkLCh OkLCh::sRGBtoOkLCh(const sRGB& srgb) {
 
   // to Linear LMS
   //val = OkLab::LinearRGBtoLinearLMS * val;
-  double l2 = 0.41224204990 * l1 + 0.5362616219 * c1 + 0.05142804289 * h1;
-  double c2 = 0.21194297300 * l1 + 0.6807021848 * c1 + 0.10737408160 * h1;
-  double h2 = 0.08835888959 * l1 + 0.2818474475 * c1 + 0.63012965340 * h1;
+  double l2 = 0.4122214708 * l1 + 0.5363325363 * c1 + 0.0514459929 * h1;
+  double c2 = 0.2119034982 * l1 + 0.6806995451 * c1 + 0.1073969566 * h1;
+  double h2 = 0.0883024619 * l1 + 0.2817188376 * c1 + 0.6299787005 * h1;
 
   // to LMS
   //val.Cbrt()
@@ -27,7 +27,7 @@ OkLCh OkLCh::sRGBtoOkLCh(const sRGB& srgb) {
   // to OkLab
   //val = OkLab::LMStoLab * val;
   l2 = 0.2104542553 * l1 + 0.7936177850 * c1 - 0.0040720468 * h1;
-  c2 = 1.9779984950 * l1 - 2.4285922050 * c1 + 0.4505937099 * h1;
+  c2 = 1.9779984951 * l1 - 2.4285922050 * c1 + 0.4505937099 * h1;
   h2 = 0.0259040371 * l1 + 0.7827717662 * c1 - 0.8086757660 * h1;
 
   // to OkLCh
@@ -49,9 +49,9 @@ sRGB OkLCh::OkLChtosRGB(const OkLCh& oklch) {
   double b2 = g1 * std::sin(b1);
 
   // to LMS
-  r1 = 0.9999999985 * r2 + 0.39633779220 * g2 + 0.21580375810 * b2;
-  g1 = 1.0000000090 * r2 - 0.10556134230 * g2 - 0.06385417477 * b2;
-  b1 = 1.0000000550 * r2 - 0.08948418209 * g2 - 1.29148553800 * b2;
+  r1 = r2 + 0.3963377774 * g2 + 0.2158037573 * b2;
+  g1 = r2 - 0.1055613458 * g2 - 0.0638541728 * b2;
+  b1 = r2 - 0.0894841775 * g2 - 1.2914855480 * b2;
 
   // to Linear LMS
   r2 = r1 * r1 * r1;
@@ -59,9 +59,9 @@ sRGB OkLCh::OkLChtosRGB(const OkLCh& oklch) {
   b2 = b1 * b1 * b1;
 
   // to Linear RGB
-  r1 =  4.076538816000 * r2 - 3.3070968280 * g2 + 0.2308224516 * b2;
-  g1 = -1.268606251000 * r2 + 2.6097476770 * g2 - 0.3411636353 * b2;
-  b1 = -0.004197563774 * r2 - 0.7035684095 * g2 + 1.7072056180 * b2;
+  r1 =  4.0767416621 * r2 - 3.3077115913 * g2 + 0.2309699292 * b2;
+  g1 = -1.2684380046 * r2 + 2.6097574011 * g2 - 0.3413193965 * b2;
+  b1 = -0.0041960863 * r2 - 0.7034186147 * g2 + 1.7076147010 * b2;
 
   // to sRGB
   r2 = r1 <= 0.00313058 ? 12.92 * r1 : (Maths::NRoot(r1, 2.4) * 1.055) - 0.055;
@@ -114,18 +114,8 @@ OkLCh& OkLCh::operator*=(const double scalar) {
   return *this;
 }
 
-void OkLCh::Fallback(const double change) {
-  m_a = std::min(std::max(m_a, 0.), 1.);
-  m_b = m_a == 0. || m_a == 1. ? 0. : m_b;
-
-  sRGB current = OkLCh::OkLChtosRGB(*this);
-  while (!current.IsInside()) {
-    m_b -= change;
-    m_b = std::max(m_b, 0.);
-
-    if (m_b == 0) break;
-    current = OkLCh::OkLChtosRGB(*this);
-  }
+void OkLCh::Fallback(const unsigned int maxIterations) {
+  
 }
 
 bool OkLCh::IsInsidesRGB() const {
